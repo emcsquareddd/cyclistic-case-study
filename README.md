@@ -22,7 +22,14 @@ Tableau - Data visualisation
 
 Data prep:
 1. [Data Loading](dataload.sql)
-2. [Data Quality Check](
+Downloaded files from 2025-01 to 2025-12 and converted them to gzips in order to be able to load them smoothly without worrying about file size.
+Created a new raw table and loaded all the files in one go using wildcard (*.csv.gz)
 
+3. [Data Quality Check](dataquality.sql)
+Sanity check of data, ensuring all file data were successfully loaded.
+ a. Overall:
+
+ b. Monthly breakdown:
+ 
 ### 3. Process
 
