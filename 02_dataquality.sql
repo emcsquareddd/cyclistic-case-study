@@ -47,3 +47,19 @@ SELECT
   COUNT(*) AS total
 FROM cyclistic.trips_raw
 WHERE TIMESTAMP_DIFF(ended_at, started_at, SECOND) BETWEEN 1 AND 59;
+
+
+-- 5. Check if data includes internal stations incl. test, maintenance, repair sites
+
+SELECT
+  start_station_name,
+  COUNT(*) AS rides
+FROM cyclistic.trips_raw
+WHERE LOWER(start_station_name) LIKE '%warehouse%'
+   OR LOWER(start_station_name) LIKE '%test%'
+   OR LOWER(start_station_name) LIKE '%repair%'
+   OR LOWER(start_station_name) LIKE '%maintenance%'
+   OR LOWER(start_station_name) LIKE '%hq%'
+   OR LOWER(start_station_name) LIKE '%divvy%'
+GROUP BY start_station_name
+ORDER BY rides DESC;
