@@ -22,16 +22,8 @@ FROM cyclistic.trips_raw
 GROUP BY month
 ORDER BY month;
 
--- 3. Boundary strays: trips dated before the 2025 window.
---    These are end-of-2024 trips caught in the January file
---    cut. Cleaning excludes them; this counts them for the log.
 
-SELECT COUNT(*) AS pre_2025_rides
-FROM cyclistic.trips_raw
-WHERE started_at < '2025-01-01';
-
-
--- 4. Issues the cleaning step will remove, each counted so the
+-- 3. Issues the cleaning step will remove, each counted so the
 --    process log can cite exact numbers and percentages rather
 --    than saying "cleaned the data".
 
