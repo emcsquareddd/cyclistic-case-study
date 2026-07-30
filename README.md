@@ -68,6 +68,8 @@ _Caught 53 rides from 2024-12 that were captured into 2025-01 file which will be
   
  iii. _null_station_ - **78.5% of sub-60 total** - unable to classify whether these were false starts or actually short rides that the bikes weren't docked. As there's no positive reason to remove them, they will be included for analysis.  
 
+Also checked for test/maintenance stations; none were present in the released data.  
+
 
 Two exclusion rules carry into the cleaning phase: non-positive-duration rides, and same-station sub-60-second trips (false starts). Notably, null-start-station rides and different-station short trips are deliberately retained, as removing them would bias the member-versus-casual comparison.
  
