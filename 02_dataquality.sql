@@ -29,9 +29,21 @@ ORDER BY month;
 
 SELECT
   COUNTIF(TIMESTAMP_DIFF(ended_at, started_at, SECOND) <= 0)    AS non_positive_duration,
+  COUNTIF(TIMESTAMP_DIFF(ended_at, started_at, SECOND) BETWEEN 1 AND 59) AS very_short_trips,
   COUNTIF(TIMESTAMP_DIFF(ended_at, started_at, SECOND) > 86400) AS over_24_hours,
   COUNTIF(member_casual NOT IN ('member', 'casual'))            AS bad_rider_type,
   COUNTIF(start_station_name IS NULL)                           AS null_start_station,
   COUNT(*) - COUNT(DISTINCT ride_id)                            AS duplicate_ride_ids,
   COUNT(*)                                                      AS total_rows
 FROM cyclistic.trips_raw;
+
+-- 4. To breakdown very_short_trips and see if any are system errors/false starts
+--    or actually very short trips. 
+
+SELECT
+  COUNTIF(start_station_name = end_station_name) AS same_station,
+  COUNTIF(start_station_name != end_station_name) AS different_station,
+  COUNTIF(start_station_name IS NULL OR end_station_name IS NULL) AS null_station,
+  COUNT(*) AS total
+FROM cyclistic.trips_raw
+WHERE TIMESTAMP_DIFF(ended_at, started_at, SECOND) BETWEEN 1 AND 59;
