@@ -22,14 +22,22 @@ Tableau - Data visualisation
 
 Data prep:
 1. [Data Loading](dataload.sql)
-Downloaded files from 2025-01 to 2025-12 and converted them to gzips in order to be able to load them smoothly without worrying about file size.
+Downloaded files from 2025-01 to 2025-12 and converted them to gzips in order to be able to load them smoothly without worrying about file size.  
 Created a new raw table and loaded all the files in one go using wildcard (*.csv.gz)
 
 3. [Data Quality Check](dataquality.sql)
 Sanity check of data, ensuring all file data were successfully loaded.
- a. Overall:
+ a. Overall: 
 
  b. Monthly breakdown:
- 
+
+ c. Pre-clean check:  
+   i. _non_positive_duration_ - **0.033%** - Number of rides that ended at or before they started - Likely system errors as not quite possible to be 0 even if you were to end the ride as soon as you started, that would still at least count a few seconds. Negative second rides are impossible.  
+  ii. _over_24_hours_ - **0.1%** - Number of trips longer 24 hours - Could be bikes not docked properly/users not properly ending their ride on the app or system not registering the end of the ride.  
+ iii. _bad_rider_type_ - Only two types of members so flags any rides that don't fall under these types.  
+  iv. _null_start_station_ - **21.3%** - Just to identify how many started not from a dock. A good to know.  
+   v. _duplicate_ride_ids_ - each ride should have a unique id, flags any potential duplicates which could be bad data.  
+
+  
 ### 3. Process
 
