@@ -34,7 +34,7 @@ Sanity check of data, ensuring all file data were successfully loaded.
  a. Overall: 
  
 ![T](/Assets/Prepresults_overall.png)
- _Combined data consists of 5,552,994 rows. Noted that the earliest dates were in 2024 and 13 distinct months detected (the extra being a small number of Dec 2024 strays, addressed below)_
+ _Combined data consists of 5,552,994 rows. Noted that the earliest dates were in 2024 and 13 distinct months detected (the extra being a small number of Dec 2024 strays, addressed below)_  
 
  b. Monthly breakdown:
 
@@ -74,5 +74,18 @@ Also checked for test/maintenance stations; none were present in the released da
 Two exclusion rules carry into the cleaning phase: non-positive-duration rides, and same-station sub-60-second trips (false starts). Notably, null-start-station rides and different-station short trips are deliberately retained, as removing them would bias the member-versus-casual comparison.
  
   
-### 3. Process
+### 3. Process  
 
+[Data Clean](03_dataclean.sql):
+
+During cleaning I ran a reconciliation check: the pre-clean counts predicted 36,636 removals, but the query removed 150,834. Investigating the ~114k gap, I found the same-station exclusion rule (start_station_name = end_station_name) was silently dropping null-station rows, because in SQL a comparison involving NULL evaluates to "unknown" rather than false, so those rows failed the WHERE clause against intent. I fixed it by adding AND start_station_name IS NOT NULL so the rule only fires on genuine same-station trips, then verified that 88,072 null-station short trips were correctly retained and the removal total reconciled fully.
+
+**Before (buggy)**   
+![](/Assets/before_query_bug.png)  
+
+**After (fixed)**  
+![](/Assets/after_query.png)  
+
+In total, 62,762 rows were removed, leaving 5,490,232 clean rows ready for analysis.  
+
+### 4. Analyse
