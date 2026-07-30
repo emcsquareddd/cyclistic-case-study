@@ -18,18 +18,18 @@ Identifying and analysing Cyclistic casual and annual member user trends to info
 
 Data source: 
 [Divvy Trip History Data](https://divvy-tripdata.s3.amazonaws.com/index.html)
-Note: Data owned by the City of Chicago and made publicly available by Lyft Bikes and Scooters, LLC under the [Divvy Data License Agreement](https://divvybikes.com/data-license-agreement). Please also note that Divvy pre-processes this data before release, removing staff service/inspection trips and trips under 60 seconds, so those are already absent from the raw files.
+Note: Data owned by the City of Chicago and made publicly available by Lyft Bikes and Scooters, LLC under the [Divvy Data License Agreement](https://divvybikes.com/data-license-agreement). Please also note that Divvy pre-processes this data before release, removing staff service/inspection trips and same-station trips under 60 seconds, so those are already absent from the raw files.
 
 Tools used: 
-BigQuery - Utilising SQL for data processing & cleansing
+BigQuery - Utilising SQL for data processing & cleansing  
 Tableau - Data visualisation
 
 Data prep:
-1. [Data Loading](dataload.sql)
+1. [Data Loading](01_dataload.sql)
 Downloaded files from 2025-01 to 2025-12 and converted them to gzips in order to be able to load them smoothly without worrying about file size.  
 Created a new raw table and loaded all the files in one go using wildcard (*.csv.gz)
 
-3. [Data Quality Check](dataquality.sql)
+3. [Data Quality Check](02_dataquality.sql)
 Sanity check of data, ensuring all file data were successfully loaded.  
  a. Overall: 
  
@@ -42,12 +42,35 @@ Sanity check of data, ensuring all file data were successfully loaded.
 _Caught 53 rides from 2024-12 that were captured into 2025-01 file which will be excluded during cleaning._
 
  c. Pre-clean check:  
-   i. _non_positive_duration_ - **0.033%** - Number of rides that ended at or before they started - Likely system errors as not quite possible to be 0 even if you were to end the ride as soon as you started, that would still at least count a few seconds. Negative second rides are impossible.  
-  ii. _over_24_hours_ - **0.1%** - Number of trips longer than 24 hours - Could be bikes not docked properly/users not properly ending their ride on the app or system not registering the end of the ride.  
- iii. _bad_rider_type_ - **0%** - Only two types of members so flags any rides that don't fall under these types. Clean  
-  iv. _null_start_station_ - **21.3%** - Just to identify how many started not from a dock. A good to know. Kept these rows in as they are likely predominantly dockless e-bike trips and removing them would bias the member-vs-casual comparison. These rows can, however, be excluded from station-specific analysis where a named start station is required.  
-   v. _duplicate_ride_ids_ - **0%** - each ride should have a unique id, flags any potential duplicates which could be bad data. Clean    
 
+ ![](/Assets/Pre-check.png)  
+ 
+   i. _non_positive_duration_ - **0.033%** - Number of rides that ended at or before they started - Likely system errors as not quite possible to be 0 even if you were to end the ride as soon as you started, that would still at least count a few seconds. Negative second rides are impossible. Will exclude during cleaning
+   
+  ii. _very_short_trips_ - **2.62%** - Number of rides that were sub-60 seconds. Looked into below
+  
+ iii. _over_24_hours_ - **0.1%** - Number of trips longer than 24 hours - Could be bikes not docked properly/users not properly ending their ride on the app or system not registering the end of the ride.  
+ 
+  iv. _bad_rider_type_ - **0%** - Only two types of members so flags any rides that don't fall under these types. Clean  
+  
+   v. _null_start_station_ - **21.3%** - Just to identify how many started not from a dock. A good to know. Kept these rows in as they are likely predominantly dockless e-bike trips and removing them would bias the member-vs-casual comparison. These rows can, however, be excluded from station-specific analysis where a named start station is required.  
+   
+  vi. _duplicate_ride_ids_ - **0%** - each ride should have a unique id, flags any potential duplicates which could be bad data. Clean    
+  
+
+ Dived deeper into _very_short_trips_ for more information.   
+
+ ![](/Assets/Sub60.png)   
+ 
+   i. _same_station_ - **20% of sub-60 total** - Divvy's page states they remove sub-60-second false starts, yet 29,161 same-station sub-minute trips remain in the released data, so their upstream filter is either narrower or less complete than described. These are most certainly false starts or someone rejecting a faulty bike so I think it'd be reasonable to exclude during data cleaning.  
+   
+  ii. _different_station_ - **1.5% of sub-60 total** - likely actual short rides around the block thus will include these for analysis.  
+  
+ iii. _null_station_ - **78.5% of sub-60 total** - unable to classify whether these were false starts or actually short rides that the bikes weren't docked. As there's no positive reason to remove them, they will be included for analysis.  
+
+
+Two exclusion rules carry into the cleaning phase: non-positive-duration rides, and same-station sub-60-second trips (false starts). Notably, null-start-station rides and different-station short trips are deliberately retained, as removing them would bias the member-versus-casual comparison.
+ 
   
 ### 3. Process
 
