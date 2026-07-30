@@ -21,7 +21,8 @@ BigQuery - Utilizing SQL for data processing & cleansing
 Tableau - Data visualisation
 
 Data prep:
-1. Data Loading
+1. [Data Loading](dataload.sql)
+2. [Data Quality Check](
 
 ### 3. Process
 
