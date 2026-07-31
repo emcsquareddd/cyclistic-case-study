@@ -90,7 +90,7 @@ In total, 62,762 rows were removed, leaving 5,490,232 clean rows ready for analy
 
 ### 4. Analyse
 
-For analysis, I looked into 6 angles:
+For analysis, I looked into [6 angles](04_dataanalysis.sql):
 
 1. How many rides, and how long, for each group?  
 ![](/Assets/angle1.png)  
