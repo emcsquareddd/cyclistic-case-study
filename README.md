@@ -92,4 +92,26 @@ In total, 62,762 rows were removed, leaving 5,490,232 clean rows ready for analy
 
 For analysis, I looked into 6 angles:
 
-1. How many rides, and how long, for each group? 
+1. How many rides, and how long, for each group?  
+![](/Assets/angle1.png)  
+Result: Casual rides are longer (median 11.5 min) but less frequent than member rides (median 8.7 min), and casual ride length varies far more, suggesting leisure vs routine use.  
+
+2. Rides by Day of Week
+![](/Assets/angle2.png)
+Result: Casual rides peak at the weekend (Saturday highest) but remain moderate on weekdays, suggesting a mostly-leisure pattern with some commuting. Member rides peak midweek (Tue–Thu) and fall on weekends, a clear commuting pattern.
+
+3. Rides by Hour of Day  
+![](/Assets/angle3.png)  
+Result: Member rides show two sharp peaks at 8am and 5pm with a midday dip, a clear commuting pattern. Casual rides rise gradually to a single afternoon peak (4–5pm) with no morning spike, consistent with leisure use.
+
+4. Seasonality
+![](/Assets/angle4.png)   
+Result: Both groups peak in summer (August) and fall in winter, but casual rides drop far more sharply. Casual January volume is ~7% of its August peak, versus ~25% for members, indicating casual riding is strongly weather-dependent while members ride year-round.  
+
+5. Bike Type  
+![](/Assets/angle5.png)  
+Result: Both groups favour e-bikes (casual 66%, member 64%), with little difference between them. Bike type is not a meaningful differentiator between casual and member use.
+
+6. Geography  
+![](/Assets/angle6.png)  
+Result: The stations with the highest casual share are overwhelmingly tourist and leisure destinations, museums (Shedd Aquarium, Field Museum, Adler Planetarium), the lakefront, and parks (Navy Pier, Millennium Park, Buckingham Fountain, area beaches and harbours). Casual riding concentrates geographically at attractions rather than residential or business areas.
