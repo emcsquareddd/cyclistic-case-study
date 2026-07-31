@@ -94,7 +94,7 @@ For analysis, I looked into [6 angles](04_dataanalysis.sql):
 
 1. How many rides, and how long, for each group?  
 ![](/Assets/angle1.png)  
-Result: Casual rides are longer (median 11.5 min) but less frequent than member rides (median 8.7 min), and casual ride length varies far more, suggesting leisure vs routine use.  
+Result: Members take substantially more rides than casuals (3.52M vs 1.97M), but casual rides are longer: median 11.5 minutes vs 8.7 for members. Casual ride length also varies far more (mean 19.4 vs median 11.5, a wide gap driven by a long tail of very long trips), whereas member rides are tightly clustered (mean 12.0, median 8.7). This suggests members use bikes for routine, consistent trips and casuals for longer, more variable leisure rides.
 
 2. Rides by Day of Week
 ![](/Assets/angle2.png)
@@ -114,4 +114,6 @@ Result: Both groups favour e-bikes (casual 66%, member 64%), with little differe
 
 6. Geography  
 ![](/Assets/angle6.png)  
-Result: The stations with the highest casual share are overwhelmingly tourist and leisure destinations, museums (Shedd Aquarium, Field Museum, Adler Planetarium), the lakefront, and parks (Navy Pier, Millennium Park, Buckingham Fountain, area beaches and harbours). Casual riding concentrates geographically at attractions rather than residential or business areas.
+Result: The stations with the highest casual share are overwhelmingly tourist and leisure destinations, museums (Shedd Aquarium, Field Museum, Adler Planetarium), the lakefront, and parks (Navy Pier, Millennium Park, Buckingham Fountain, area beaches and harbours). Casual riding concentrates geographically at attractions rather than residential or business areas.  
+
+Across time, season, and geography, member rides show a consistent commuting pattern (weekday, twin-peak, year-round) while casual rides show a leisure pattern (weekend, afternoon, summer, concentrated at attractions). Bike type does not distinguish the two groups.
