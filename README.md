@@ -14,6 +14,11 @@ Note: Cyclistic is a fictional bike-share company used for this case study. As i
 #### Business Task
 Identifying and analysing Cyclistic casual and annual member user trends to inform strategies for converting casual riders into annual members.
 
+#### Stakeholders
+1. Marketing Director
+2. Executive team
+3. Bike Operations Team - rebalancing & deployment implications
+
 ### 2. Prepare
 
 Data source: 
